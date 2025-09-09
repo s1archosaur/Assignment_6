@@ -94,6 +94,87 @@ card.innerHTML = ``;
     `;
 }; 
 
+const cart = document.getElementById("cart");
+    cart.innerHTML = '<p class="text-center text-gray-500 text-sm">Your Cart is Empty</p>';
+const itemCounts = {}; 
+
+totalPrice = document.getElementById("total-price");
+totalPrice.innerHTML = 0;
+const itemPrices = {};
+let totalPriceValue = 0;
+const loadPriceontoCart = (name, price, id) => {
+    if (!itemCounts[id]) {
+        itemCounts[id] = 1;
+
+        if (cart.innerHTML.includes('Your Cart is Empty')) {
+            cart.innerHTML = "";
+        }
+
+        cart.innerHTML += `
+            <div id="cart-item-${id}" class="px-3 py-2 bg-[#F0FDF4] h-16 flex flex-row justify-between items-center">
+                <div class="flex flex-col gap-1"> 
+            <p class="font-semibold text-sm">${name}</p>
+            <p class="flex flex-row items-center">
+                <i class="fa-solid fa-bangladeshi-taka-sign fa-sm opacity-50"></i>
+            <span class="opacity-50 flex flex-row gap-1 items-center">${price}
+                <span class="text-[0.6rem]">X</span>
+                            <span id="count-${id}">${itemCounts[id]}</span>
+                </span>
+                    </p>
+                </div>
+         <button id="${id}" class="btn px-1 py-0 border-0 bg-[#F0FDF4] h-sm tooltip tooltip-left cursor-pointer hover:shadow hover:shadow-black hover:text-red-600">
+                    <span class="tooltip-content text-xs">Click to remove one<br> item from cart</span>
+                    <i class="fa-solid fa-x opacity-50"></i>
+                </button>
+            </div>
+        `;
+        if (!itemPrices[id]) {
+            itemPrices[id] = price;
+        }
+        totalPriceValue += price;
+        totalPrice.innerHTML = totalPriceValue;
+    } else {
+        itemCounts[id]++;
+        document.getElementById(`count-${id}`).innerText = itemCounts[id];
+        totalPriceValue += price;
+        totalPrice.innerHTML = totalPriceValue;
+    }
+
+
+    alert("Adding item to cart");
+};
+
+cart.addEventListener("click", (event) => {
+    const target = event.target.closest("[id]");
+    if (target) {
+const id = target.id;
+        if (itemCounts[id] > 1) {
+            itemCounts[id]--;
+            document.getElementById(`count-${id}`).innerText = itemCounts[id];
+            totalPriceValue -= itemPrices[id];
+            totalPrice.innerHTML = totalPriceValue;
+        } else {
+            document.getElementById(`cart-item-${id}`).remove();
+            totalPriceValue -= itemPrices[id] * itemCounts[id];
+            totalPrice.innerHTML = totalPriceValue;
+            delete itemCounts[id];
+            delete itemPrices[id];
+
+    let isCartEmpty = true;
+    for (let key in itemCounts) {
+         if (itemCounts[key] > 0) {
+                    isCartEmpty = false;
+                    break;
+                }
+            }
+    if (isCartEmpty) {
+        cart.innerHTML = '<p class="text-center text-gray-500 text-sm">Your Cart is Empty</p>';
+        }
+        }
+
+    alert("Removing items from cart");
+    }
+});
 
 
 
