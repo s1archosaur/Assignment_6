@@ -206,5 +206,34 @@ const url_4 = `https://openapi.programming-hero.com/api/plants`
 
 };
 
+const showModal = (id, image, name, description, category, price) => {
+    const modalElement = document.createElement('div');
+    modalElement.innerHTML = `
+        <dialog id="my_modal_5" class="modal modal-bottom sm:modal-middle">
+            <div class="modal-box overflow-hidden">
+           <h3 class="text-xl font-bold">${name}</h3>
+            <div class="card mt-[0.5rem] mb-[0.5rem] h-50 md:h-75 w-full overflow-hidden rounded-lg shadow-lg">
+                    <img src="${image}" alt="" class="object-cover w-full h-full">
+                </div>
+                <p class="mb-[0.3rem]"><span class="font-semibold">Category: </span>${category}</p>
+            <p class="mb-[0.3rem]"><span class="font-semibold">Price: </span><i class="fa-solid fa-bangladeshi-taka-sign fa-xs"></i>${price}</p>
+                <p class="mb-[0.3rem]"><span class="font-semibold">Description: </span>${description}</p>
+                <div class="modal-action">
+                    <form method="dialog">
+                  <button class="btn">Close</button>
+                    </form>
+                </div>
+            </div>
+        </dialog>
+    `.trim();
+
+    document.getElementById("modal-section").appendChild(modalElement.firstElementChild);
+    document.getElementById("my_modal_5").showModal();
+
+    document.getElementById("my_modal_5").addEventListener("close", () => {
+        document.getElementById("my_modal_5").remove();
+    });
+};
+
    loadCategories();
    loadAllPlants();
